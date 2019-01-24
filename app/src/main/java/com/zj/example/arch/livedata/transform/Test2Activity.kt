@@ -62,5 +62,10 @@ class Test2Activity : AppCompatActivity() {
             println("mediatorLiveData postValue -> zj")
             mediatorLiveData.postValue("zj")
         }
+
+        button4.setOnClickListener {
+            println("removeSource source1")
+            mediatorLiveData.removeSource(source1)
+        }
     }
 }
