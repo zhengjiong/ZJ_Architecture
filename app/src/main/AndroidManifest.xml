@@ -18,6 +18,8 @@
         </activity>
         <activity android:name="com.zj.example.arch.livedata.basic1.Test1Activity"/>
         <activity android:name="com.zj.example.arch.livedata.extention.Test1Activity"/>
+        <activity android:name=".livedata.transform.Test1Activity"/>
+        <activity android:name=".livedata.transform.Test2Activity"/>
     </application>
 
 </manifest>

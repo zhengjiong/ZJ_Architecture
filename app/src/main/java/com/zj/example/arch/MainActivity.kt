@@ -26,7 +26,9 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = Adapter(listOf(
                 Item("example1-livedata-viewmodel基本使用", Test1Activity::class.java),
-                Item("example1-livedata-扩展", com.zj.example.arch.livedata.extention.Test1Activity::class.java)
+                Item("example1-livedata-扩展", com.zj.example.arch.livedata.extention.Test1Activity::class.java),
+                Item("example1-livedata-transformations-map-switch-1", com.zj.example.arch.livedata.transform.Test1Activity::class.java),
+                Item("example1-livedata-transformations-map-switch-2-mediatorlivedata", com.zj.example.arch.livedata.transform.Test2Activity::class.java)
         ))
     }
 
