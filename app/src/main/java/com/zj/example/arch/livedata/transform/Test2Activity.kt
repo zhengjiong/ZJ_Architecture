@@ -22,12 +22,6 @@ class Test2Activity : AppCompatActivity() {
             return mediatorLiveData
         }
     })
-    val liveDataTransform2 = Transformations.map(liveData1, object : Function<Int, String> {
-        override fun apply(input: Int?): String {
-            println("liveDataTransform2 map input-$input")
-            return input.toString() + "-str"
-        }
-    })
 
     val mediatorLiveData = MediatorLiveData<String>()
 
@@ -35,31 +29,38 @@ class Test2Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transform_layout_2)
 
-        //mediatorLiveData.value = "init"
+        mediatorLiveData.value = "init"
         val source1 = MutableLiveData<String>()
 
         mediatorLiveData.addSource(source1) {
             println("source onChanged ->$it")
+            mediatorLiveData.value = it
         }
 
+        mediatorLiveData.observe(this, Observer {
+            println("mediatorLiveData onChange -> $it")
+        })
+
         liveData1.observe(this, Observer<Int> { t ->
-            println("onChanged -> $t")
+            println("liveData1 onChanged -> $t")
         })
         liveDataTransform1.observe(this, Observer<String> { t ->
             println("liveDataTransform1 onChanged -> $t")
         })
-        liveDataTransform2.observe(this, Observer<String> { t ->
-            println("liveDataTransform2 onChanged -> $t")
-        })
 
         button1.setOnClickListener {
-            println("postValue -> 1")
+            println("liveData1 postValue -> 1")
             liveData1.postValue(1)
         }
 
         button2.setOnClickListener {
-            println("postValue -> zj")
+            println("source1 postValue -> zj")
             source1.postValue("zj")
+        }
+
+        button3.setOnClickListener {
+            println("mediatorLiveData postValue -> zj")
+            mediatorLiveData.postValue("zj")
         }
     }
 }
