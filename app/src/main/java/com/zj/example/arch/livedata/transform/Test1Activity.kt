@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.activity_transform_layout_1.*
 
 /**
  *
- * Company: 上加下信息技术成都有限公司
  * CreateTime:2019/1/23  20:25
  * @author 郑炯
  * @version 1.0

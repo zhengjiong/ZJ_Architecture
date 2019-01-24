@@ -5,7 +5,7 @@ import android.arch.lifecycle.*
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.zj.example.arch.R
-import kotlinx.android.synthetic.main.activity_transform_layout_2.*
+import kotlinx.android.synthetic.main.activity_transform_layout_3.*
 
 /**
  *
@@ -13,11 +13,11 @@ import kotlinx.android.synthetic.main.activity_transform_layout_2.*
  * @author 郑炯
  * @version 1.0
  */
-class Test2Activity : AppCompatActivity() {
+class Test3Activity : AppCompatActivity() {
     val liveData1 = MutableLiveData<Int>()
     val liveDataTransform1 = Transformations.switchMap(liveData1, object : Function<Int, LiveData<String>> {
         override fun apply(input: Int?): LiveData<String> {
-            println("liveDataTransform1 switchMap input-$input")
+            println("liveDataTransform1 switchMap input -> $input")
             return mediatorLiveData
         }
     })
@@ -26,15 +26,10 @@ class Test2Activity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_transform_layout_2)
+        setContentView(R.layout.activity_transform_layout_3)
 
-        mediatorLiveData.value = "init"
+        //mediatorLiveData.value = "init"
         val source1 = MutableLiveData<String>()
-
-        mediatorLiveData.addSource(source1) {
-            println("source onChanged ->$it")
-            mediatorLiveData.value = it
-        }
 
         mediatorLiveData.observe(this, Observer {
             println("mediatorLiveData onChange -> $it")
@@ -65,6 +60,12 @@ class Test2Activity : AppCompatActivity() {
         button4.setOnClickListener {
             println("removeSource source1")
             mediatorLiveData.removeSource(source1)
+        }
+        button5.setOnClickListener {
+            mediatorLiveData.addSource(source1) {
+                println("source onChanged ->$it")
+                mediatorLiveData.value = it
+            }
         }
     }
 }
