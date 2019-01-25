@@ -29,7 +29,8 @@ class MainActivity : AppCompatActivity() {
                 Item("example1-livedata-扩展", com.zj.example.arch.livedata.extention.Test1Activity::class.java),
                 Item("example1-livedata-transformations-map-switch-1", com.zj.example.arch.livedata.transform.Test1Activity::class.java),
                 Item("example1-livedata-transformations-map-switch-2-mediatorlivedata", com.zj.example.arch.livedata.transform.Test2Activity::class.java),
-                Item("example1-livedata-transformations-map-switch-3-addsource", com.zj.example.arch.livedata.transform.Test3Activity::class.java)
+                Item("example1-livedata-transformations-map-switch-3-addsource", com.zj.example.arch.livedata.transform.Test3Activity::class.java),
+                Item("example1-livedata-transformations-retrofit", com.zj.example.arch.livedata.retrofit.Test1Activity::class.java)
         ))
     }
 
