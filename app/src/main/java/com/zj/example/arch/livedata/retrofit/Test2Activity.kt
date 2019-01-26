@@ -1,10 +1,7 @@
 package com.zj.example.arch.livedata.retrofit
 
 import android.arch.core.util.Function
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.Transformations
+import android.arch.lifecycle.*
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.zj.example.arch.R
@@ -27,11 +24,9 @@ import retrofit2.converter.gson.GsonConverterFactory
  * @author 郑炯
  * @version 1.0
  */
-class Test1Activity : AppCompatActivity() {
-    val liveData1 = MutableLiveData<Int>()
-    lateinit var userRepository: UserRepository
-    lateinit var githubService: GithubService
+class Test2Activity : AppCompatActivity() {
     lateinit var kuaiheService: KuaiHeService
+    var liveData1 = MutableLiveData<Int>()
     /*val liveDataTransform1 = Transformations.switchMap(liveData1, object : Function<Int, LiveData<Resource<User>>> {
         override fun apply(input: Int?): LiveData<Resource<User>> {
             println("liveDataTransform1 switchMap input -> $input")
@@ -45,30 +40,9 @@ class Test1Activity : AppCompatActivity() {
         }
     })*/
 
-    /*val liveDataTransform3 = Transformations.switchMap(liveData1, object : Function<Int, LiveData<ApiResponse<Any>>> {
-        override fun apply(input: Int?): LiveData<ApiResponse<Any>> {
-            println("liveDataTransform3 switchMap input -> $input")
-            return kuaiheService.init()
-        }
-    })*/
-
-    val liveDataTransform4 = Transformations.switchMap(liveData1, object : Function<Int, LiveData<ApiResponse<Any>>> {
-        override fun apply(input: Int?): LiveData<ApiResponse<Any>> {
-            println("liveDataTransform4 switchMap input -> $input")
-            return kuaiHeRepositoryInstance.testService.init()
-        }
-    })
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transform_layout_3)
-
-        githubService = Retrofit.Builder()
-                .baseUrl("https://api.github.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(LiveDataCallAdapterFactory())
-                .build()
-                .create(GithubService::class.java)
 
         kuaiheService = Retrofit.Builder()
                 .baseUrl("https://fuse-test.1919.cn/")
@@ -77,51 +51,60 @@ class Test1Activity : AppCompatActivity() {
                 .build()
                 .create(KuaiHeService::class.java)
 
-        userRepository = UserRepository(AppExecutors(), githubService)
-        //mediatorLiveData.value = "init"
-
-        /*initLiveData.observe(this, Observer {
-            println("mediatorLiveData onChange -> $it")
-        })*/
-
-        liveData1.observe(this, Observer<Int> { t ->
-            println("liveData1 onChanged -> $t")
-        })
-        /*liveDataTransform1.observe(this, Observer<Resource<User>> { t ->
-            println("liveDataTransform1 onChanged -> $t")
-        })*/
-
-        /*liveDataTransform2.observe(this, Observer<ApiResponse<User>> { t ->
-            println("liveDataTransform2 onChanged -> $t")
-        })
-        liveDataTransform3.observe(this, Observer<ApiResponse<Any>> { t ->
-            println("liveDataTransform3 onChanged -> $t")
-        })*/
-
-        liveDataTransform4.observe(this, Observer<ApiResponse<Any>> {
-            println("liveDataTransform4 onChanged -> $it")
-        })
 
         /**
          * 从这里可以看出, KuaiHeService中的livedata一旦被观察就可以执行网络请求的操作!
          */
-        kuaiHeRepositoryInstance.testService.init().observe(this, Observer<ApiResponse<Any>> {
-            println("kuaiHeRepositoryInstance.testService.init() onChange -> " + it)
-        })
+        //val initLiveData = kuaiHeRepositoryInstance.testService.init()
+        val initLiveData by lazy {
+            kuaiheService.init()
+        }
+
+
+        val mediatorLiveData: MediatorLiveData<ApiResponse<Any>> = MediatorLiveData()
+        val mediatorLiveData2: MediatorLiveData<Int> = MediatorLiveData()
+
 
         button1.setOnClickListener {
-            println("liveData1 postValue -> 1")
-            liveData1.postValue(1)
+            println("initLiveData observe")
+            initLiveData.observe(this, Observer<ApiResponse<Any>> {
+                println("initLiveData onChange -> " + it)
+            })
         }
 
         button2.setOnClickListener {
-            println("source1 postValue -> zj")
-            kuaiHeRepositoryInstance.testService.init()
+            println("addSource initLiveData")
+            mediatorLiveData.addSource(initLiveData, object : Observer<ApiResponse<Any>> {
+                override fun onChanged(t: ApiResponse<Any>?) {
+                    println("source onChanged 1 -> " + t)
+                }
+            })
+
         }
 
+        mediatorLiveData.addSource(liveData1, object : Observer<Int> {
+            override fun onChanged(t: Int?) {
+                println("source onChanged 2 -> " + t)
+                //mediatorLiveData.value = t
+            }
+        })
+
+
+        mediatorLiveData.observe(this, object : Observer<ApiResponse<Any>> {
+            override fun onChanged(t: ApiResponse<Any>?) {
+                println("mediatorLiveData2 onChanged -> " + t)
+            }
+        })
+
+        mediatorLiveData2.observe(this, object : Observer<Int> {
+            override fun onChanged(t: Int?) {
+                println("mediatorLiveData2 onChanged -> " + t)
+            }
+        })
+
         button3.setOnClickListener {
-            println("mediatorLiveData postValue -> zj")
-            //mediatorLiveData.postValue("zj")
+            println("liveData1 postValue -> 1")
+            liveData1.postValue(1)
         }
 
         button4.setOnClickListener {

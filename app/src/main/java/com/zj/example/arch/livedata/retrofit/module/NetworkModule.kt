@@ -1,11 +1,9 @@
-package com.zj.example.arch.livedata.module
+package com.zj.example.arch.livedata.retrofit.module
 
-import com.zj.example.arch.livedata.repository.util.LiveDataCallAdapterFactory
-import com.zj.example.arch.livedata.repository.util.LiveDataCallAdapterFactory2
+import com.zj.example.arch.livedata.retrofit.repository.util.LiveDataCallAdapterFactory
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import java.util.concurrent.TimeUnit
 
 /**
@@ -30,6 +28,6 @@ class NetworkModule {
             .client(okHttpClient)
             .baseUrl("https://fuse-test.1919.cn/")
             .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(LiveDataCallAdapterFactory2())
+            .addCallAdapterFactory(LiveDataCallAdapterFactory())
             .build()
 }
