@@ -41,14 +41,17 @@ class Test1Activity : AppCompatActivity() {
         liveData1.observe(this, Observer<Int> { t ->
             println("onChanged -> $t")
         })
+
+        //liveDataTransform1, 是接收不到liveData1传递过来的值的, liveDataTransform3需要放出数据才行
         liveDataTransform1.observe(this, Observer<String> { t ->
             println("liveDataTransform1 onChanged -> $t")
         })
+
         liveDataTransform2.observe(this, Observer<String> { t ->
             println("liveDataTransform2 onChanged -> $t")
         })
 
-        //这里liveDataTransform3, 是接收不到liveData1传递过来的值的, 解决办法看Test1Activity
+        //这里liveDataTransform3, 是接收不到liveData1传递过来的值的, liveDataTransform3需要放出数据才行
         liveDataTransform3.observe(this, Observer<String> { t ->
             println("liveDataTransform3 onChanged -> $t")
         })
