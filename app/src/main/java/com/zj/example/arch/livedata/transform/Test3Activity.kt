@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.activity_transform_layout_3.*
  */
 class Test3Activity : AppCompatActivity() {
     val liveData1 = MutableLiveData<Int>()
+    val liveData2 = MutableLiveData<Long>()
     val liveDataTransform1 = Transformations.switchMap(liveData1, object : Function<Int, LiveData<String>> {
         override fun apply(input: Int?): LiveData<String> {
             println("liveDataTransform1 switchMap input -> $input")
@@ -35,9 +36,15 @@ class Test3Activity : AppCompatActivity() {
             println("mediatorLiveData onChange -> $it")
         })
 
-        liveData1.observe(this, Observer<Int> { t ->
+        val observer = Observer<Int> { t ->
             println("liveData1 onChanged -> $t")
-        })
+        }
+        val observer2 = Observer<Long> { t ->
+            println("liveData2 onChanged -> $t")
+        }
+        liveData1.observe(this, observer)
+        liveData2.observe(this, observer2)
+
         liveDataTransform1.observe(this, Observer<String> { t ->
             println("liveDataTransform1 onChanged -> $t")
         })
@@ -66,6 +73,18 @@ class Test3Activity : AppCompatActivity() {
                 println("source onChanged ->$it")
                 mediatorLiveData.value = it
             }
+        }
+        button6.setOnClickListener {
+            liveData2.removeObserver(observer2)
+            println("liveData2 removeObserver")
+
+        }
+        button7.setOnClickListener {
+            //remove后, 重新观察会接收到最后一次发出的数据
+            liveData2.observe(this, observer2)
+        }
+        button8.setOnClickListener {
+            liveData2.postValue(System.currentTimeMillis())
         }
     }
 }
