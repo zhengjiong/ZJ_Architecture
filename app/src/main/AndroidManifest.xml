@@ -25,6 +25,7 @@
         <activity android:name=".livedata.transform.Test3Activity"/>
         <activity android:name=".livedata.retrofit.Test1Activity"/>
         <activity android:name=".livedata.retrofit.Test2Activity"/>
+        <activity android:name=".livedata.singlelivedata.Test1Activity"/>
     </application>
 
 </manifest>

@@ -26,12 +26,13 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = Adapter(listOf(
                 Item("example1-livedata-viewmodel基本使用", Test1Activity::class.java),
-                Item("example1-livedata-扩展", com.zj.example.arch.livedata.extention.Test1Activity::class.java),
-                Item("example1-livedata-transformations-map-switch-1", com.zj.example.arch.livedata.transform.Test1Activity::class.java),
-                Item("example1-livedata-transformations-map-switch-2-mediatorlivedata", com.zj.example.arch.livedata.transform.Test2Activity::class.java),
-                Item("example1-livedata-transformations-map-switch-3-addsource", com.zj.example.arch.livedata.transform.Test3Activity::class.java),
-                Item("example1-livedata-transformations-retrofit", com.zj.example.arch.livedata.retrofit.Test1Activity::class.java),
-                Item("example1-livedata-transformations-retrofit-2", com.zj.example.arch.livedata.retrofit.Test2Activity::class.java)
+                Item("example2-livedata-扩展", com.zj.example.arch.livedata.extention.Test1Activity::class.java),
+                Item("example3-livedata-transformations-map-switch-1", com.zj.example.arch.livedata.transform.Test1Activity::class.java),
+                Item("example4-livedata-transformations-map-switch-2-mediatorlivedata", com.zj.example.arch.livedata.transform.Test2Activity::class.java),
+                Item("example5-livedata-transformations-map-switch-3-addsource", com.zj.example.arch.livedata.transform.Test3Activity::class.java),
+                Item("example6-livedata-transformations-retrofit", com.zj.example.arch.livedata.retrofit.Test1Activity::class.java),
+                Item("example7-livedata-transformations-retrofit-2", com.zj.example.arch.livedata.retrofit.Test2Activity::class.java),
+                Item("example8-livedata-singlelivedata", com.zj.example.arch.livedata.singlelivedata.Test1Activity::class.java)
         ))
     }
 
