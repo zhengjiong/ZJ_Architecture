@@ -10,14 +10,11 @@ import android.support.v7.app.AppCompatActivity
 import com.zj.example.arch.R
 import com.zj.example.arch.livedata.retrofit.api.ApiResponse
 import com.zj.example.arch.livedata.retrofit.api.GithubService
-import com.zj.example.arch.livedata.retrofit.api.KuaiHeService
+import com.zj.example.arch.livedata.retrofit.api.DrinkService
 import com.zj.example.arch.livedata.retrofit.repository.UserRepository
-import com.zj.example.arch.livedata.retrofit.repository.kuaiHeRepositoryInstance
+import com.zj.example.arch.livedata.retrofit.repository.drinkRepositoryInstance
 import com.zj.example.arch.livedata.retrofit.repository.util.LiveDataCallAdapterFactory
-import com.zj.example.arch.livedata.retrofit.vo.Resource
-import com.zj.example.arch.livedata.retrofit.vo.User
 import kotlinx.android.synthetic.main.activity_transform_layout_3.*
-import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -31,7 +28,7 @@ class Test1Activity : AppCompatActivity() {
     val liveData1 = MutableLiveData<Int>()
     lateinit var userRepository: UserRepository
     lateinit var githubService: GithubService
-    lateinit var kuaiheService: KuaiHeService
+    lateinit var drinkService: DrinkService
     /*val liveDataTransform1 = Transformations.switchMap(liveData1, object : Function<Int, LiveData<Resource<User>>> {
         override fun apply(input: Int?): LiveData<Resource<User>> {
             println("liveDataTransform1 switchMap input -> $input")
@@ -48,14 +45,14 @@ class Test1Activity : AppCompatActivity() {
     /*val liveDataTransform3 = Transformations.switchMap(liveData1, object : Function<Int, LiveData<ApiResponse<Any>>> {
         override fun apply(input: Int?): LiveData<ApiResponse<Any>> {
             println("liveDataTransform3 switchMap input -> $input")
-            return kuaiheService.init()
+            return drinkService.init()
         }
     })*/
 
     val liveDataTransform4 = Transformations.switchMap(liveData1, object : Function<Int, LiveData<ApiResponse<Any>>> {
         override fun apply(input: Int?): LiveData<ApiResponse<Any>> {
             println("liveDataTransform4 switchMap input -> $input")
-            return kuaiHeRepositoryInstance.testService.init()
+            return drinkRepositoryInstance.testService.init()
         }
     })
 
@@ -70,12 +67,12 @@ class Test1Activity : AppCompatActivity() {
                 .build()
                 .create(GithubService::class.java)
 
-        kuaiheService = Retrofit.Builder()
-                .baseUrl("https://fuse-test.1919.cn/")
+        drinkService = Retrofit.Builder()
+                .baseUrl("https://api.github.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(LiveDataCallAdapterFactory())
                 .build()
-                .create(KuaiHeService::class.java)
+                .create(DrinkService::class.java)
 
         userRepository = UserRepository(AppExecutors(), githubService)
         //mediatorLiveData.value = "init"
@@ -103,10 +100,10 @@ class Test1Activity : AppCompatActivity() {
         })
 
         /**
-         * 从这里可以看出, KuaiHeService中的livedata一旦被观察就可以执行网络请求的操作!
+         * 从这里可以看出, Service中的livedata一旦被观察就可以执行网络请求的操作!
          */
-        kuaiHeRepositoryInstance.testService.init().observe(this, Observer<ApiResponse<Any>> {
-            println("kuaiHeRepositoryInstance.testService.init() onChange -> " + it)
+        drinkRepositoryInstance.testService.init().observe(this, Observer<ApiResponse<Any>> {
+            println("drinkRepositoryInstance.testService.init() onChange -> " + it)
         })
 
         button1.setOnClickListener {
@@ -116,7 +113,7 @@ class Test1Activity : AppCompatActivity() {
 
         button2.setOnClickListener {
             println("source1 postValue -> zj")
-            kuaiHeRepositoryInstance.testService.init()
+            drinkRepositoryInstance.testService.init()
         }
 
         button3.setOnClickListener {

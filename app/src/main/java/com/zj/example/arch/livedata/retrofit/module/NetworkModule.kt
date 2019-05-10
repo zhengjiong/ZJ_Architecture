@@ -26,7 +26,7 @@ class NetworkModule {
 
     val apiRetrofit = Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl("https://fuse-test.1919.cn/")
+            .baseUrl("https://api.github.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(LiveDataCallAdapterFactory())
             .build()

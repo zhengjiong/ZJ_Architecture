@@ -9,7 +9,7 @@ import org.json.JSONObject
  * @author 郑炯
  * @version 1.0
  */
-class MockApi : KuaiHeService {
+class MockApi : DrinkService {
     override fun init2(): LiveData<ApiResponse<JSONObject>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

@@ -1,20 +1,15 @@
 package com.zj.example.arch.livedata.retrofit
 
-import android.arch.core.util.Function
-import android.arch.lifecycle.*
+import android.arch.lifecycle.MediatorLiveData
+import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.zj.example.arch.R
 import com.zj.example.arch.livedata.retrofit.api.ApiResponse
-import com.zj.example.arch.livedata.retrofit.api.GithubService
-import com.zj.example.arch.livedata.retrofit.api.KuaiHeService
-import com.zj.example.arch.livedata.retrofit.repository.UserRepository
-import com.zj.example.arch.livedata.retrofit.repository.kuaiHeRepositoryInstance
+import com.zj.example.arch.livedata.retrofit.api.DrinkService
 import com.zj.example.arch.livedata.retrofit.repository.util.LiveDataCallAdapterFactory
-import com.zj.example.arch.livedata.retrofit.vo.Resource
-import com.zj.example.arch.livedata.retrofit.vo.User
 import kotlinx.android.synthetic.main.activity_transform_layout_3.*
-import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -25,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory
  * @version 1.0
  */
 class Test2Activity : AppCompatActivity() {
-    lateinit var kuaiheService: KuaiHeService
+    lateinit var drinkService: DrinkService
     var liveData1 = MutableLiveData<Int>()
     /*val liveDataTransform1 = Transformations.switchMap(liveData1, object : Function<Int, LiveData<Resource<User>>> {
         override fun apply(input: Int?): LiveData<Resource<User>> {
@@ -44,20 +39,20 @@ class Test2Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transform_layout_3)
 
-        kuaiheService = Retrofit.Builder()
-                .baseUrl("https://fuse-test.1919.cn/")
+        drinkService = Retrofit.Builder()
+                .baseUrl("https://api.github.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(LiveDataCallAdapterFactory())
                 .build()
-                .create(KuaiHeService::class.java)
+                .create(DrinkService::class.java)
 
 
         /**
-         * 从这里可以看出, KuaiHeService中的livedata一旦被观察就可以执行网络请求的操作!
+         * 从这里可以看出, drinkService中的livedata一旦被观察就可以执行网络请求的操作!
          */
-        //val initLiveData = kuaiHeRepositoryInstance.testService.init()
+        //val initLiveData = drinkRepositoryInstance.testService.init()
         val initLiveData by lazy {
-            kuaiheService.init()
+            drinkService.init()
         }
 
 
